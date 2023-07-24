@@ -18,17 +18,18 @@ class AuthController extends BaseController
         ]);
         
         //The attempt method accepts an array of key / value pairs as its first argument. The values in the array will be used to find the user in your database table
-        if(!auth() -> attempt($validatedData )){
+        if(!auth() -> attempt($validatedData)){
             return $this->handleError('invalid email or password',401);
         }else{
             $result = [
                 'user' => auth() -> user(),
                 'accessToken' => auth() -> user()->createToken('authToken')->accessToken
             ];
-            return $this->handleResponse($result,'Login successfully');
+            return $this->handleSuccessWithResult($result,'Login successfully');
             
         }
     }
+    
 
 
 }
