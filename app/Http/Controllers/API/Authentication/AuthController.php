@@ -20,7 +20,7 @@ class AuthController extends BaseController
             'confirm_password'=>'required|same:password',
         ]);
         if($validator->fails()){
-            return $this->handleError($validator->errors());
+            return $this->handleError($validator->errors(),404);
         }
         $input = $request->all();
         $input['password'] = Hash::make($input['password']);
@@ -31,4 +31,26 @@ class AuthController extends BaseController
 
         return $this->handleResponse($success,'User successfully registered');
     }
+    
+   
+    public function login(Request $request){
+        $validatedData = $request -> validate([
+            'email'=> 'required',
+            'password' => 'required',
+        ]);
+        
+        //The attempt method accepts an array of key / value pairs as its first argument. The values in the array will be used to find the user in your database table
+        if(!auth() -> attempt($validatedData )){
+            return $this->handleError('invalid email or password',401);
+        }else{
+            $result = [
+                'user' => auth() -> user(),
+                'accessToken' => auth() -> user()->createToken('authToken')->accessToken
+            ];
+            return $this->handleResponse($result,'Login successfully');
+            
+        }
+    }
+
+
 }
