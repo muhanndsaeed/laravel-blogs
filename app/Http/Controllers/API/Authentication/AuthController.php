@@ -36,7 +36,7 @@ class AuthController extends BaseController
    
     public function login(Request $request){
         $validatedData = $request -> validate([
-            'email'=> 'required',
+            'email'=> 'required|string',
             'password' => 'required',
         ]);
         
@@ -56,7 +56,7 @@ class AuthController extends BaseController
 
     public function loginWithUserName(Request $request){
         $validatedData = $request -> validate([
-            'user_name'=> 'required',
+            'user_name'=> 'required|string',
             'password' => 'required',
         ]);
         

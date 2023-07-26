@@ -33,4 +33,19 @@ class UserController extends BaseController
             }
         }
     }
+
+    public function updateProfile(Request $request){
+
+        $validatedData = $request -> validate([
+            'name'=> 'required|string',
+            'user_name'=> 'unique:users,user_name,'.auth()->id(),
+            'email'=> 'unique:users,email,'.auth()->id()
+        ]);
+        
+        if(auth()->user()->update($validatedData)){
+            return $this->handleSuccess('Update successfully');
+        }else{
+            return $this->handleError('Some error happened , please try again',401);
+            }
+        }
 }
