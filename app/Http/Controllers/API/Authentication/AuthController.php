@@ -13,6 +13,7 @@ class AuthController extends BaseController
 {
     public function register(Request $request){
         $validator = Validator::make($request->all(),[
+            'name'=> 'required|string',
             'user_name'=> 'required|string',
             'email'=>'required|email|unique:users,email',
             'phone_number'=> 'required|digits:10',
@@ -42,6 +43,26 @@ class AuthController extends BaseController
         //The attempt method accepts an array of key / value pairs as its first argument. The values in the array will be used to find the user in your database table
         if(!auth() -> attempt($validatedData)){
             return $this->handleError('invalid email or password',401);
+        }else{
+            $result = [
+                'user' => auth() -> user(),
+                'accessToken' => auth() -> user()->createToken('authToken')->accessToken
+            ];
+            return $this->handleSuccessWithResult($result,'Login successfully');
+            
+        }
+    }
+
+
+    public function loginWithUserName(Request $request){
+        $validatedData = $request -> validate([
+            'user_name'=> 'required',
+            'password' => 'required',
+        ]);
+        
+        //The attempt method accepts an array of key / value pairs as its first argument. The values in the array will be used to find the user in your database table
+        if(!auth() -> attempt($validatedData)){
+            return $this->handleError('invalid userName or password',401);
         }else{
             $result = [
                 'user' => auth() -> user(),
