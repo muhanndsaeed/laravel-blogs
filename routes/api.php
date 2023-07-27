@@ -19,7 +19,10 @@ use App\Http\Controllers\API\Authentication\UserController;
 
 Route::post('register' , [AuthController::class , 'register']);
 Route::post('login' , [AuthController::class , 'login']);
+Route::post('loginWithUserName' , [AuthController::class , 'loginWithUserName']);
 Route::middleware('auth:api')->prefix('user')->group(function(){
     Route::post('update/password' , [UserController::class , 'updatePassword']);
+    Route::get('profile' , [UserController::class , 'showMyProfile']);
+    Route::post('profile/edit' , [UserController::class , 'updateProfile']);
     Route::post('logout',[AuthController::class, 'logout']);
 });
