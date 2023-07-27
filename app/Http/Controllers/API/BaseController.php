@@ -17,7 +17,7 @@ class BaseController extends Controller
         return response()->json($res,200);
     }
 
-    public function handleSuccess($msg){
+    public function handleSuccess($msg){ 
         $res = [
             'success' => true,
             'message' => $msg,

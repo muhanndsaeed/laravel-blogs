@@ -33,49 +33,29 @@ class AuthController extends BaseController
         return $this->handleSuccessWithResult($success,'User successfully registered');
     }
     
-   
     public function login(Request $request){
         $validatedData = $request -> validate([
-            'email'=> 'required|string',
+            'email'=> 'string|exists:users,email',
+            'user_name'=> 'string|exists:users,user_name',
             'password' => 'required',
         ]);
         
         //The attempt method accepts an array of key / value pairs as its first argument. The values in the array will be used to find the user in your database table
         if(!auth() -> attempt($validatedData)){
-            return $this->handleError('invalid email or password',401);
+            return $this->handleError('invalid credentials',401);
         }else{
             $result = [
                 'user' => auth() -> user(),
                 'accessToken' => auth() -> user()->createToken('authToken')->accessToken
             ];
-            return $this->handleSuccessWithResult($result,'Login successfully');
-            
+            return $this->handleSuccessWithResult($result,'Login successfully');   
         }
     }
-
-
-    public function loginWithUserName(Request $request){
-        $validatedData = $request -> validate([
-            'user_name'=> 'required|string',
-            'password' => 'required',
-        ]);
-        
-        //The attempt method accepts an array of key / value pairs as its first argument. The values in the array will be used to find the user in your database table
-        if(!auth() -> attempt($validatedData)){
-            return $this->handleError('invalid userName or password',401);
-        }else{
-            $result = [
-                'user' => auth() -> user(),
-                'accessToken' => auth() -> user()->createToken('authToken')->accessToken
-            ];
-            return $this->handleSuccessWithResult($result,'Login successfully');
-            
-        }
-    }
+    
 
     public function logout(Request $request){
         $request->user()->tokens()->delete();
-
+        
         return response()->json([
             'message'=>'Logged out',
         ]);

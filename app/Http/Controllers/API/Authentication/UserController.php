@@ -38,6 +38,7 @@ class UserController extends BaseController
 
         $validatedData = $request -> validate([
             'name'=> 'required|string',
+            'phone_number'=> 'string',
             'user_name'=> 'unique:users,user_name,'.auth()->id(),
             'email'=> 'unique:users,email,'.auth()->id()
         ]);
@@ -48,4 +49,17 @@ class UserController extends BaseController
             return $this->handleError('Some error happened , please try again',401);
             }
         }
+    
+    public function showMyProfile()
+    {
+        $user = auth() -> user();
+        if($user){
+            return $this->handleSuccessWithResult($user,'');
+        }else{
+            return $this->handleError('No such Found!',404);
+        }
+    }
+
+    
+    
 }
