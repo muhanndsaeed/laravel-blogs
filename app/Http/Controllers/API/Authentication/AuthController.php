@@ -4,10 +4,12 @@ namespace App\Http\Controllers\API\Authentication;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\PasswordResetTokens;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\API\BaseController;
+use App\Notifications\PasswordResetNotification;
 
 class AuthController extends BaseController
 {
@@ -50,6 +52,86 @@ class AuthController extends BaseController
             return $this->handleSuccessWithResult($result,'Login successfully');
             
         }
+    }
+
+    
+
+    public function forgot(Request $request){
+        $user  = ($query= User::query());
+        $user = $user->where($query->qualifyColumn('email'),$request->email)->first();
+
+        if(!$user || !$user->email){
+            return $this->handleError("Incorrect Email Address",404);
+        }
+
+        $resetPasswordToken = str_pad(random_int(1,9999),4,'0',STR_PAD_LEFT);
+
+        if(!$userPassRest = PasswordResetTokens::where('email',$user->email)->first()){
+
+            PasswordResetTokens::create([
+                'email' => $user->email,
+                'token'=> $resetPasswordToken,
+            ]);
+
+        }
+        else {
+            $userPassRest->update([
+                'email' => $user->email,
+                'token' => $resetPasswordToken,
+            ]);
+        }
+
+        $user->notify( new PasswordResetNotification($resetPasswordToken));
+
+        return response()->json([
+            'message'=> 'A code has been sent to your email address'
+        ]);
+        
+    }
+
+    public function resetpassword(Request $request){
+        $validator = Validator::make($request->all(),[
+            'email'=> 'required|exists:users,email',
+            'token'=> 'required',
+            'password'=>'required|min:6|max:100',
+            'confirm_password'=>'required|same:password',
+        ]);
+        if($validator->fails()){
+            return $this->handleError($validator->errors(),404);
+        }
+        
+        $input = $request->all();
+        
+        $user = User::where('email',$input['email'])->first();
+
+        $resetRequest = PasswordResetTokens::where('email',$user->email)->first();
+
+        if(!$resetRequest || $resetRequest->token != $request['token']){
+            return $this->handleError('Token mismatch',404);
+        }
+
+        $user->fill([
+            'password'=> Hash::make($input['password']),
+        ]);
+
+
+        $user->save();
+
+        $user->tokens()->delete();
+
+        
+        $resetRequest->delete();
+
+
+        
+        
+        $response = [
+            'email'=> $user->email,
+            
+
+        ];
+        return $this->handleSuccessWithResult($response,['Password Reset Success']);
+        
     }
 
     public function logout(Request $request){
