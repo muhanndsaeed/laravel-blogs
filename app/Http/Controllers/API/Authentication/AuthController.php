@@ -58,8 +58,6 @@ class AuthController extends BaseController
     
 
     public function forgot(Request $request){
-        // $user  = ($query= User::query());
-        // $user = $user->where($query->qualifyColumn('email'),$request->email)->first();
         $user = User::where('email',$request->email)->first();
 
         if(!$user || !$user->email){
