@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Authentication;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Models\PasswordResetTokens;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -57,8 +58,9 @@ class AuthController extends BaseController
     
 
     public function forgot(Request $request){
-        $user  = ($query= User::query());
-        $user = $user->where($query->qualifyColumn('email'),$request->email)->first();
+        // $user  = ($query= User::query());
+        // $user = $user->where($query->qualifyColumn('email'),$request->email)->first();
+        $user = User::where('email',$request->email)->first();
 
         if(!$user || !$user->email){
             return $this->handleError("Incorrect Email Address",404);
@@ -83,9 +85,7 @@ class AuthController extends BaseController
 
         $user->notify( new PasswordResetNotification($resetPasswordToken));
 
-        return response()->json([
-            'message'=> 'A code has been sent to your email address'
-        ]);
+        return $this->handleSuccess('A code has been sent to your email address');
         
     }
 
@@ -125,21 +125,19 @@ class AuthController extends BaseController
 
         
         
-        $response = [
-            'email'=> $user->email,
-            
-
-        ];
-        return $this->handleSuccessWithResult($response,['Password Reset Success']);
+      
+        return $this->handleSuccessWithResult($user,['Password Reset Success']);
         
     }
 
     public function logout(Request $request){
-        $request->user()->tokens()->delete();
+        
+            $request->user()->tokens()->delete();
 
-        return response()->json([
-            'message'=>'Logged out',
-        ]);
+            return $this->handleSuccess('Logged out');
+        
+       
+      
     }
     
 

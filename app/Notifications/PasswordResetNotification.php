@@ -38,7 +38,7 @@ class PasswordResetNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->line('Your Password reset token is:')
+                    ->line('Your Password reset code is:')
                     ->line($this->token)
                     // ->action('Notification Action', url('/'))
                     ->line('Thank you for using our application!');
