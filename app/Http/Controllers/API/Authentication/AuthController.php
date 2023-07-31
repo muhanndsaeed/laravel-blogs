@@ -122,8 +122,7 @@ class AuthController extends BaseController
 
 
         
-        
-      
+    
         return $this->handleSuccessWithResult($user,['Password Reset Success']);
         
     }

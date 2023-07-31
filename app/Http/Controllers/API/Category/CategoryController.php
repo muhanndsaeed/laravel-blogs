@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CategoryRequest;
 use App\Http\Controllers\API\BaseController;
 
+
 class CategoryController extends BaseController
 {
 
@@ -21,10 +22,12 @@ class CategoryController extends BaseController
             return $this->handleError('No Records Found',200); 
         }
     }
+
+
+
     public function store(CategoryRequest $request){
 
         try {
-            //code...
         
             Category::create([
                 'user_id'=> Auth::user()->id,
@@ -41,6 +44,9 @@ class CategoryController extends BaseController
         
 
     }
+
+
+
     public function update(CategoryRequest $request,$id){
 
        $category = Category::find($id);
@@ -56,10 +62,20 @@ class CategoryController extends BaseController
         } else{
             return $this->handleError("Category not found",404);
         }
-       
+    
+    }
 
-       
 
+    public function destroy(string $id)
+    {   
+        $categories = Category::find($id);
+        
+        if($categories){
+            $categories -> delete();
+            return $this->handleSuccessWithResult($categories ,'deleted successfully');
+        }else{
+            return $this->handleError("the category not found",401);
+            }
     }
     
     

@@ -28,13 +28,12 @@ Route::middleware('auth:api')->prefix('user')->group(function(){
     Route::get('profile' , [UserController::class , 'showMyProfile']);
     Route::post('profile/edit' , [UserController::class , 'updateProfile']);
     Route::post('logout',[AuthController::class, 'logout']);
+    
 });
 Route::middleware(['auth:api', 'admin'])->group(function(){
-    
+    //category
     Route::post('category',[CategoryController::class , 'store']);
     Route::put('category/{id}',[CategoryController::class , 'update']);
+    Route::delete('category/{id}' , [CategoryController::class , 'destroy']);
 
 });
-Route::get('category' , [CategoryController::class , 'index']);
-
-
