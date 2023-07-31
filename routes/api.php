@@ -2,9 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\Category\CategoryController;
 use App\Http\Controllers\API\Authentication\AuthController;
 use App\Http\Controllers\API\Authentication\UserController;
-use App\Http\Controllers\API\Category\CategoryController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -28,9 +29,11 @@ Route::middleware('auth:api')->prefix('user')->group(function(){
     Route::post('profile/edit' , [UserController::class , 'updateProfile']);
     Route::post('logout',[AuthController::class, 'logout']);
 });
-
 Route::middleware(['auth:api', 'admin'])->group(function(){
-
+    
     Route::post('category',[CategoryController::class , 'store']);
 
 });
+Route::get('category' , [CategoryController::class , 'index']);
+
+
