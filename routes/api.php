@@ -32,5 +32,6 @@ Route::middleware('auth:api')->prefix('user')->group(function(){
 Route::middleware(['auth:api', 'admin'])->group(function(){
 
     Route::post('category',[CategoryController::class , 'store']);
+    Route::put('category/{id}',[CategoryController::class , 'update']);
 
 });

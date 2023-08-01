@@ -32,5 +32,25 @@ class CategoryController extends BaseController
         
 
     }
+    public function update(CategoryRequest $request,$id){
+
+       $category = Category::find($id);
+        if($category){
+            $category->update([
+                'user_id'=> Auth::user()->id,
+                'title'=>$request->title,
+                'description'=>$request->description,
+       ]);
+
+       return $this->handleSuccess($category,'Update category successfully');
+
+        } else{
+            return $this->handleError("Category not found",404);
+        }
+       
+
+       
+
+    }
     
 }
