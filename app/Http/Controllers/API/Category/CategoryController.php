@@ -34,8 +34,8 @@ class CategoryController extends BaseController
                 'title'=>$request->title,
                 'description'=>$request->description,
             ]);
-            $success['title'] = $request->title;
-            $success['description'] = $request->description;
+            $success = $request->all();
+            
             return $this->handleSuccess($success,'Create category successfully');
         } catch (\Throwable $th) {
             //throw $th;
