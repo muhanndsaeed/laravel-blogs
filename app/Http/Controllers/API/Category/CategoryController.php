@@ -11,7 +11,16 @@ use App\Http\Controllers\API\BaseController;
 
 class CategoryController extends BaseController
 {
-    //
+
+    public function index(){
+
+        $categories = Category::all();
+        if (!empty($categories)){
+            return $this->handleSuccess($categories);
+        }else{
+            return $this->handleError('No Records Found',200); 
+        }
+    }
     public function store(CategoryRequest $request){
 
         try {
@@ -52,5 +61,6 @@ class CategoryController extends BaseController
        
 
     }
+    
     
 }
