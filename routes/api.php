@@ -38,5 +38,6 @@ Route::middleware(['auth:api', 'admin'])->group(function(){
     Route::delete('category/{id}' , [CategoryController::class , 'destroy']);
 
 });
+Route::get('category' , [CategoryController::class , 'index']);
 
 Route::resource('post',PostController::class)->middleware('auth:api');
