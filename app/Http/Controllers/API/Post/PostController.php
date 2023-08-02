@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\API\Post;
 
+
 use Exception;
 use App\Models\Post;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Requests\PostRequest;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PostResource;
 use App\Http\Controllers\API\BaseController;
 
 class PostController extends BaseController
@@ -15,9 +17,13 @@ class PostController extends BaseController
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Post $post)
     {
-        //
+        try{
+            return PostResource::collection(Post::all());
+        }catch (Exception $error) {
+            return $this->handleError($error,500);
+        }    
     }
 
  
@@ -46,7 +52,6 @@ class PostController extends BaseController
      */
     public function show($id)
     {
-
         try {
             $post =  Post::where('category_id',$id)->get();
             if(count($post)){
@@ -58,6 +63,7 @@ class PostController extends BaseController
             //throw $th;
             return $this->handleError($error,500);
         }
+
 
     }
 

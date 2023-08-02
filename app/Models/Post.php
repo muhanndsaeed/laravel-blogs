@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Post extends Model
-{
+{   
+    public $table = 'posts';
     protected $fillable = [
         'user_id',
         'category_id',
@@ -25,8 +26,6 @@ class Post extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function post(){
-        return $this->hasMany(Post::class);
-    }
+ 
       
 }

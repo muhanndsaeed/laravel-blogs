@@ -52,7 +52,10 @@ class User extends Authenticatable
     public function category(){
         return $this->hasMany(Category::class);
     }
-
+    
+    public function post(){
+        return $this->hasMany(Post::class);
+    }
    
 
 
