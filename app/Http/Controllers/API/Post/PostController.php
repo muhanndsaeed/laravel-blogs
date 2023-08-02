@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\API\Post;
 
-use App\Http\Controllers\Controller;
+use Exception;
 use App\Models\Post;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Requests\PostRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\API\BaseController;
 
-class PostController extends Controller
+class PostController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -16,20 +20,25 @@ class PostController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+ 
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(PostRequest $request)
+    {   
+        try{
+            $category = Category::find($request->category_id);
+            if($category){
+                $request['user_id'] = auth() -> id();
+                $post = $category -> post() -> create($request->all());
+                return $this->handleSuccessWithResult($post ,'add successfully');
+            }else{
+                return $this->handleError("the category not found",401);
+                }
+        }catch (Exception $error) {
+            return $this->handleError($error,500);
+        }     
     }
 
     /**
@@ -40,13 +49,6 @@ class PostController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Post $post)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
