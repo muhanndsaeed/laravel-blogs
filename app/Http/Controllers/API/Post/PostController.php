@@ -49,8 +49,10 @@ class PostController extends BaseController
 
         try {
             $post =  Post::where('category_id',$id)->get();
-            if($post){
+            if(count($post)){
                 return $this->handleSuccessWithResult($post,'Posts retrieved successfully');
+            }else {
+                return $this->handleError("the category not found",404);
             }
         } catch (Exception $error) {
             //throw $th;
