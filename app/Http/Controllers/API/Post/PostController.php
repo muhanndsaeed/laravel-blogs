@@ -44,9 +44,19 @@ class PostController extends BaseController
     /**
      * Display the specified resource.
      */
-    public function show(Post $post)
+    public function show($id)
     {
-        //
+
+        try {
+            $post =  Post::where('category_id',$id)->get();
+            if($post){
+                return $this->handleSuccessWithResult($post,'Posts retrieved successfully');
+            }
+        } catch (Exception $error) {
+            //throw $th;
+            return $this->handleError($error,500);
+        }
+
     }
 
 
