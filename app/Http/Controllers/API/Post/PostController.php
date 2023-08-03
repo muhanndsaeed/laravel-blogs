@@ -92,8 +92,21 @@ class PostController extends BaseController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Post $post)
+    public function destroy($id)
     {
-        //
+        $userId = auth()->user()->id;
+        $post = Post::where('user_id',$userId)->where('id',$id)->first();
+        try {
+            if(!empty($post)){
+                $post->delete();
+                return $this->handleSuccess('Post deleted successfully');
+            }else {
+                return $this->handleError('Post Not Found',404);
+            }
+        } catch (\Throwable $th) {
+            return $this->handleError($th,500);
+        }
+        
+
     }
 }
