@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\API\Post;
 
-
 use Exception;
 use App\Models\Post;
 use App\Models\Category;
@@ -55,39 +54,42 @@ class PostController extends BaseController
         try {
             $post =  Post::where('category_id',$id)->get();
             if(count($post)){
-                return PostResource::collection($post);
+                return $this->handleSuccessWithResult($post,'Posts retrieved successfully');
             }else {
                 return $this->handleError("the category not found",404);
             }
         } catch (Exception $error) {
+            //throw $th;
             return $this->handleError($error,500);
         }
 
-
     }
-    
-    public function ShowMyBlogs(){
-        $userId = auth()->user()->id;
-        $posts = Post::where('user_id',$userId)->get();
-        try {
-        if(count($posts)){
-            return PostResource::collection($posts);
-        }else {
-            return $this->handleError("No post found",404);
-        }
 
-        } catch (\Throwable $th) {
-            return $this->handleError($th,500);
-        }
-        }
 
     /**
      * Update the specified resource in storage.
      */
+
     public function update(Request $request, Post $post)
     {
-        //
+        $post = Post::find($post -> id);
+        if(auth()-> id() != $post -> user_id){
+            return $this->handleError("You don't own post",401);
+        }else{
+            try{
+                if($post){
+                    $post = $post -> update($request->all());
+                    return $this->handleSuccessWithResult($post ,'update successfully');
+                }else{
+                    return $this->handleError("the post not found",401);
+                    }
+            }catch (Exception $error) {
+                return $this->handleError($error,500);
+            }     
+        }
     }
+
+
 
     /**
      * Remove the specified resource from storage.

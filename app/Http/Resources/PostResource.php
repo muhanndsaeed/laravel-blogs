@@ -17,11 +17,14 @@ class PostResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'user_name' => $this -> user -> user_name,
+            'name' => $this -> user -> name,
+            'email' => $this -> user -> email,
+            'category' => $this -> category-> title,
             'title' => $this -> title,
             'description' => $this -> description,
             'created_at' => $this -> created_at,
-            'category' => $this -> category-> title,
-            'user' => $this -> user -> user_name,
+            
         ];
     }
     
