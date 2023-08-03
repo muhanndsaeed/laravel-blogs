@@ -55,18 +55,31 @@ class PostController extends BaseController
         try {
             $post =  Post::where('category_id',$id)->get();
             if(count($post)){
-                return $this->handleSuccessWithResult($post,'Posts retrieved successfully');
+                return PostResource::collection($post);
             }else {
                 return $this->handleError("the category not found",404);
             }
         } catch (Exception $error) {
-            //throw $th;
             return $this->handleError($error,500);
         }
 
 
     }
+    
+    public function ShowMyBlogs(){
+        $userId = auth()->user()->id;
+        $posts = Post::where('user_id',$userId)->get();
+        try {
+        if(count($posts)){
+            return PostResource::collection($posts);
+        }else {
+            return $this->handleError("No post found",404);
+        }
 
+        } catch (\Throwable $th) {
+            return $this->handleError($th,500);
+        }
+        }
 
     /**
      * Update the specified resource in storage.

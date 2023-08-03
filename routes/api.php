@@ -41,3 +41,4 @@ Route::middleware(['auth:api', 'admin'])->group(function(){
 Route::get('category' , [CategoryController::class , 'index']);
 
 Route::resource('post',PostController::class)->middleware('auth:api');
+Route::get('posts', [PostController::class,'ShowMyBlogs'])->middleware('auth:api');
