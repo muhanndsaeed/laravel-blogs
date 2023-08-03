@@ -64,6 +64,23 @@ class PostController extends BaseController
         }
 
     }
+    /**
+     * Display User Posts
+     */
+    public function ShowMyBlogs(){
+        $userId = auth()->user()->id;
+        $posts = Post::where('user_id',$userId)->get();
+        try {
+        if(count($posts)){
+            return PostResource::collection($posts);
+        }else {
+            return $this->handleError("No post found",404);
+        }
+
+        } catch (\Throwable $th) {
+            return $this->handleError($th,500);
+        }
+        }
 
 
     /**
