@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CommentRequest;
 use App\Http\Controllers\API\BaseController;
+use App\Http\Resources\CommentResource;
 
 class CommentController extends BaseController
 {
@@ -45,7 +46,6 @@ class CommentController extends BaseController
                 return $this->handleError('Post not found!',404);
             }
         } catch (Exception $error) {
-            //throw $th;
             return $this->handleError($error,500);
         }
         
@@ -56,7 +56,17 @@ class CommentController extends BaseController
      */
     public function show(string $id)
     {
-        //
+        try {
+            $comments = Comment::where('post_id',$id)->get();
+            if(count($comments)){
+            return $this->handleSuccess(CommentResource::collection($comments));
+        }else {
+            return $this->handleError('Comments Not found',404);
+        }
+        }  catch (Exception $error) {
+            return $this->handleError($error,500);
+        }
+        
     }
 
     /**
