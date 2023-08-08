@@ -60,6 +60,9 @@ class User extends Authenticatable
     public function comment(){
         return $this->hasMany(Comment::class);
     }
+    public function file(){
+        return $this->hasMany(File::class);
+    }
 
 
 }
