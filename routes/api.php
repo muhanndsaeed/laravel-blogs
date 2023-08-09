@@ -7,7 +7,7 @@ use App\Http\Controllers\API\Comments\CommentController;
 use App\Http\Controllers\API\Category\CategoryController;
 use App\Http\Controllers\API\Authentication\AuthController;
 use App\Http\Controllers\API\Authentication\UserController;
-
+use App\Http\Controllers\API\Files\FileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,3 +45,4 @@ Route::resource('post',PostController::class)->middleware('auth:api');
 Route::get('posts', [PostController::class,'ShowMyBlogs'])->middleware('auth:api');
 
 Route::resource('comment', CommentController::class)->middleware('auth:api');
+Route::resource('files', FileController::class)->middleware('auth:api');
