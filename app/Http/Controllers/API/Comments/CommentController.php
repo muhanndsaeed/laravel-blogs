@@ -17,9 +17,18 @@ class CommentController extends BaseController
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Comment $comment)
     {
-        //
+        try{
+            $comments = Comment::where('user_id',auth()->id())->get();
+            if(count($comments)){
+                return CommentResource::collection($comments);
+            }else{
+                return "you dont have any comment";
+            }
+        }catch (Exception $error) {
+            return $this->handleError($error,500);
+        }  
     }
 
     /**
@@ -34,8 +43,7 @@ class CommentController extends BaseController
      * Store a newly created resource in storage.
      */
     public function store(CommentRequest $request)
-    {
-        
+    {  
         try {
             $post = Post::find($request->post_id);
             if($post){
@@ -48,7 +56,6 @@ class CommentController extends BaseController
         } catch (Exception $error) {
             return $this->handleError($error,500);
         }
-        
     }
 
     /**
@@ -61,13 +68,14 @@ class CommentController extends BaseController
             if(count($comments)){
             return $this->handleSuccess(CommentResource::collection($comments));
         }else {
-            return $this->handleError('Comments Not found',404);
+            return $this->handleError("there's no comments",404);
         }
         }  catch (Exception $error) {
             return $this->handleError($error,500);
         }
         
     }
+
 
     /**
      * Show the form for editing the specified resource.
