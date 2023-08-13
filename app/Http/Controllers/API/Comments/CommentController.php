@@ -88,8 +88,26 @@ class CommentController extends BaseController
     /**
      * As a user I can update on my comment.
      */
-    public function update(CategoryRequest $request,string $id)
-    {
+    public function update(Request $request,string $id)
+    { 
+        try{
+        $comment = Comment::find($id);
+        if(auth()->id() != $comment->user_id){
+            return $this->handleError("anauthorised",404);
+        }else{
+            if($comment){
+                $comment->update([
+                    'content'=>$request->content,
+           ]);
+                return $this->handleSuccessWithResult($comment,'Update comment successfully');
+            } else{
+                return $this->handleError("comment not found",404);
+            }
+        }  
+        }catch (Exception $error) {
+            return $this->handleError($error,500);
+        }  
+        
         
     }
 
