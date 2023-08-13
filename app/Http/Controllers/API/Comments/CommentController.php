@@ -94,10 +94,25 @@ class CommentController extends BaseController
     }
 
     /**
-     * Remove the specified resource from storage.
+     *As a user I can delete my comment on the post
      */
     public function destroy(string $id)
     {
-        //
+        try{
+        $comment = Comment::find($id);
+        if(auth()->id() != $comment->user_id){
+            return $this->handleError("unauthorised",401);
+
+        }else{
+            if($comment){
+                $comment -> delete();
+                return $this->handleSuccessWithResult($comment ,'deleted successfully');
+            }else{
+                return $this->handleError("the comment not found",401);
+                }
+        }
+        }catch (Exception $error) {
+            return $this->handleError($error,500);
+        }    
     }
 }
