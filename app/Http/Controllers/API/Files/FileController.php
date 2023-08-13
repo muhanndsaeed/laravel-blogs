@@ -57,9 +57,7 @@ class FileController extends BaseController
      */
     public function show(string $id)
     {
-        $image = File::where('user_id',auth()->user()->id)->where('post_id',$id)->first();
-        $path = $image;
-        return response($image, 200)->header('Content-Type', Storage::path($path));
+
     }
 
     /**
