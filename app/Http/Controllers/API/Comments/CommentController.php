@@ -15,7 +15,7 @@ use App\Http\Resources\CommentResource;
 class CommentController extends BaseController
 {
     /**
-     * Display a listing of the resource.
+     * As a user I can show all my comments.
      */
     public function index(Comment $comment)
     {
@@ -86,11 +86,11 @@ class CommentController extends BaseController
     }
 
     /**
-     * Update the specified resource in storage.
+     * As a user I can update on my comment.
      */
-    public function update(Request $request, string $id)
+    public function update(CategoryRequest $request,string $id)
     {
-        //
+        
     }
 
     /**
