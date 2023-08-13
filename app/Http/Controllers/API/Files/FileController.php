@@ -8,6 +8,7 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Http\Requests\FileRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\API\BaseController;
 
@@ -56,7 +57,9 @@ class FileController extends BaseController
      */
     public function show(string $id)
     {
-        //
+        $image = File::where('user_id',auth()->user()->id)->where('post_id',$id)->first();
+        $path = $image;
+        return response($image, 200)->header('Content-Type', Storage::path($path));
     }
 
     /**
