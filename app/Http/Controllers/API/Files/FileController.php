@@ -6,7 +6,9 @@ use Exception;
 use App\Models\File;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Http\Requests\FileRequest;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -38,7 +40,7 @@ class FileController extends BaseController
         $post= Post::where('user_id',auth()->user()->id)->find($request->post_id);
         if($post){
             $name = $request->file_name->getClientOriginalName();
-            $path = $request->file_name->store('public/uploads');
+            $path = $request->file_name->store('uploads','public');;
             $save['user_id'] = auth()->user()->id;
             $save['file_name'] = $name;
             $save['file_path'] = $path;
@@ -57,11 +59,23 @@ class FileController extends BaseController
      */
     public function show(string $id)
     {
-        $image = File::where('user_id',auth()->user()->id)->where('post_id',$id)->first();
-        $path = $image;
-        return response($image, 200)->header('Content-Type', Storage::path($path));
+        
     }
 
+    public function DownloadFile(String $id ,String $post_id ,File $file){
+        $uploadfile = $file->where('id',$id)->where('user_id',auth()->user()->id)->where('post_id',$post_id)->first();
+        if($uploadfile){
+            $path = $uploadfile->file_path;
+            $file = Storage::disk('public')->get($path);
+      
+            return  response($file, 200)->header('Content-Type', Storage::mimeType($path));
+        }else {
+            return $this->handleError("File Not Found",404);
+        }
+        
+    }
+
+    
     /**
      * Show the form for editing the specified resource.
      */
