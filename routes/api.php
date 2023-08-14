@@ -46,3 +46,4 @@ Route::get('posts', [PostController::class,'ShowMyBlogs'])->middleware('auth:api
 
 Route::resource('comment', CommentController::class)->middleware('auth:api');
 Route::resource('files', FileController::class)->middleware('auth:api');
+Route::get('file/{id}/{post_id}', [FileController::class, 'DownloadFile'])->middleware('auth:api');

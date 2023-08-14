@@ -6,7 +6,9 @@ use Exception;
 use App\Models\File;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Http\Requests\FileRequest;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -57,9 +59,23 @@ class FileController extends BaseController
      */
     public function show(string $id)
     {
-
+        
     }
 
+    public function DownloadFile(String $id ,String $post_id ,File $file){
+        $uploadfile = $file->where('id',$id)->where('user_id',auth()->user()->id)->where('post_id',$post_id)->first();
+        if($uploadfile){
+            $path = $uploadfile->file_path;
+            $file = Storage::disk('public')->get($path);
+      
+            return  response($file, 200)->header('Content-Type', Storage::mimeType($path));
+        }else {
+            return $this->handleError("File Not Found",404);
+        }
+        
+    }
+
+    
     /**
      * Show the form for editing the specified resource.
      */
