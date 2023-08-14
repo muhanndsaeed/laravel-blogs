@@ -66,9 +66,9 @@ class FileController extends BaseController
         $uploadfile = $file->where('id',$id)->first();
         if($uploadfile){
             $path = $uploadfile->file_path;
-            $file = Storage::disk('public')->get($path);
+            $storedFile = Storage::disk('public')->get($path);
       
-            return  response($file, 200)->header('Content-Type', Storage::mimeType($path));
+            return  response($storedFile, 200)->header('Content-Type', Storage::mimeType($path));
         }else {
             return $this->handleError("File Not Found",404);
         }
