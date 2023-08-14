@@ -40,7 +40,7 @@ class FileController extends BaseController
         $post= Post::where('user_id',auth()->user()->id)->find($request->post_id);
         if($post){
             $name = $request->file_name->getClientOriginalName();
-            $path = $request->file_name->store('uploads','public');;
+            $path = $request->file_name->store('public/posts');
             $save['user_id'] = auth()->user()->id;
             $save['file_name'] = $name;
             $save['file_path'] = $path;
