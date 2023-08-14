@@ -36,7 +36,7 @@ class FileController extends BaseController
      * Store a newly created resource in storage.
      */
     public function store(FileRequest $request)
-    {
+    {   
         $post= Post::where('user_id',auth()->user()->id)->find($request->post_id);
         if($post){
             $name = $request->file_name->getClientOriginalName();
@@ -93,10 +93,26 @@ class FileController extends BaseController
     }
 
     /**
-     * Remove the specified resource from storage.
+     * As a user I can delete file
      */
-    public function destroy(string $id)
+    public function destroy(File $file)
     {
-        //
+        try{
+            if(auth()->id() != $file->user_id){
+                return $this->handleError("unauthorised",401);
+            }else{
+                if($file->delete()){
+                   $deleted = Storage::delete($file->file_path);
+                   if($deleted){
+                    return $this->handleSuccessWithResult($file ,'deleted successfully');
+                   }
+                }else{
+                    return $this->handleError("the file not found",401);
+                    }
+            }
+            }catch (Exception $error) {
+                return $this->handleError($error,500);
+            }    
+        
     }
 }
