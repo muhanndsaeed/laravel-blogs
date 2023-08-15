@@ -7,6 +7,7 @@ use App\Models\File;
 use App\Models\User;
 use App\Models\Comment;
 use App\Models\Category;
+use App\Models\Favorite;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -33,6 +34,9 @@ class Post extends Model
 
     public function file(){
         return $this->hasMany(File::class);
+    }
+    public function favorite(){
+        return $this->hasMany(Favorite::class);
     }
       
 }

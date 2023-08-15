@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Category;
+use App\Models\Favorite;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -64,5 +65,10 @@ class User extends Authenticatable
         return $this->hasMany(File::class);
     }
 
+    public function favorite(){
+        return $this->hasMany(Favorite::class);
+    }
+    
+    
 
 }
