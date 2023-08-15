@@ -23,6 +23,7 @@ class PostResource extends JsonResource
             'category' => $this -> category-> title,
             'title' => $this -> title,
             'description' => $this -> description,
+            'file'=> $this->user->file,
             'created_at' => $this -> created_at,
             
         ];
