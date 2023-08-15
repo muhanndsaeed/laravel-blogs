@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\favorites;
 
+use Exception;
 use App\Models\Post;
 use App\Models\Favorite;
 use Illuminate\Http\Request;
@@ -12,11 +13,21 @@ use App\Http\Controllers\API\BaseController;
 class FavoritesController extends BaseController
 {
     /**
-     * Display a listing of the resource.
+     * As a user I can show all my favorite
      */
     public function index()
     {
-        //
+        try {
+            $myFavorite = Favorite::where('user_id',auth()->id())->get();
+            if(count($myFavorite)){
+                return $this->handleSuccess($myFavorite);
+            }else {
+                return $this->handleError("Not Favorites Found",404);
+            };
+        } catch (Exception $error) {
+            return $this->handleError($error,500);
+        }  
+    
     }
 
     
