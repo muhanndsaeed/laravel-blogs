@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\favorites;
 
+
 use Exception;
 use App\Models\Post;
 use App\Models\Favorite;
@@ -39,9 +40,12 @@ class FavoritesController extends BaseController
         try{
             $post = Post::find($request->post_id);
             if($post){
-                $request['user_id'] = auth() -> id();
-                $fav = $post -> favorite() -> create($request->all());
-                return $this->handleSuccessWithResult($post ,'add favorite successfully');
+                $CheckInFavorite =  Favorite::where('post_id',$request->post_id)->where('user_id',auth()->id())->get();
+                if(!count($CheckInFavorite)){
+                    $request['user_id'] = auth() -> id();
+                    $fav = $post -> favorite() -> create($request->all());
+                    return $this->handleSuccessWithResult($post ,'add favorite successfully');
+                }
             }else{
                 return $this->handleError("the post not found",401);
                 }
@@ -50,13 +54,6 @@ class FavoritesController extends BaseController
         }     
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Favorite $favorite)
-    {
-        //
-    }
 
 
     /**
