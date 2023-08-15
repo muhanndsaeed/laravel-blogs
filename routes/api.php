@@ -3,11 +3,12 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\Post\PostController;
+use App\Http\Controllers\API\Files\FileController;
 use App\Http\Controllers\API\Comments\CommentController;
 use App\Http\Controllers\API\Category\CategoryController;
 use App\Http\Controllers\API\Authentication\AuthController;
 use App\Http\Controllers\API\Authentication\UserController;
-use App\Http\Controllers\API\Files\FileController;
+use App\Http\Controllers\API\favorites\FavoritesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,3 +48,5 @@ Route::get('posts', [PostController::class,'ShowMyBlogs'])->middleware('auth:api
 Route::resource('comment', CommentController::class)->middleware('auth:api');
 Route::resource('files', FileController::class)->middleware('auth:api');
 Route::get('file/{id}', [FileController::class, 'DownloadFile']);
+
+Route::resource('favorite', FavoritesController::class)->middleware('auth:api');
