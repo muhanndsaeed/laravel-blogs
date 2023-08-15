@@ -60,10 +60,21 @@ class FavoritesController extends BaseController
 
 
     /**
-     * Remove the specified resource from storage.
+     * As a user I can remove favorite on the post.
      */
-    public function destroy(Favorite $favorite)
+    public function destroy(String $id)
     {
-        //
+        try {
+            $favorite = Favorite::where('user_id', auth()->user()->id)->where('id', $id)->first();
+            if($favorite){
+                $favorite->delete();
+                return $this->handleSuccessWithResult($favorite,"Favorites deleted successfully");
+            }else {
+                return $this->handleError("Favorite not found",404);
+            }
+        } catch (Exception $error) {
+            return $this->handleError($error,500);
+        }
+       
     }
 }
