@@ -31,13 +31,7 @@ class CommentController extends BaseController
         }  
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+   
 
     /**
      * Store a newly created resource in storage.
@@ -77,13 +71,6 @@ class CommentController extends BaseController
     }
 
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
 
     /**
      * As a user I can update on my comment.
