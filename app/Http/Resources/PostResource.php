@@ -24,7 +24,7 @@ class PostResource extends JsonResource
             'title' => $this -> title,
             'description' => $this -> description,
             'file'=> $this->user->file,
-            'favorites' => $this -> favorite,
+            'favorites' => $this-> favorite,
             'favorites_count' => $this -> favorite->count(),
             'created_at' => $this -> created_at,
             
