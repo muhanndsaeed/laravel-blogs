@@ -25,7 +25,7 @@ class FileController extends BaseController
         $post= Post::where('user_id',auth()->user()->id)->find($request->post_id);
         if($post){
             $name = $request->file_name->getClientOriginalName();
-            $path = $request->file_name->store('public/posts');
+            $path = $request->file_name->store('uploads','public');
             $save['user_id'] = auth()->user()->id;
             $save['file_name'] = $name;
             $save['file_path'] = $path;
@@ -65,7 +65,7 @@ class FileController extends BaseController
                 if($file){
                    $t= $file->update([
                         'file_name'=>$request->file_name->getClientOriginalName(),
-                        'file_path'=>$request->file_name->store('public/posts'),
+                        'file_path'=>$request->file_name->store('uploads','public'),
                ]);
                     return $this->handleSuccessWithResult($t,'Update file successfully');
                 } else{
