@@ -33,7 +33,7 @@ class FavoritesController extends BaseController
 
     
     /**
-     * As a user I can add favorite on the post.
+     * As a user I can add and remove favorite on the post.
      */
     public function store(FavoriteRequest $request)
     {
@@ -43,8 +43,12 @@ class FavoritesController extends BaseController
                 $CheckInFavorite =  Favorite::where('post_id',$request->post_id)->where('user_id',auth()->id())->get();
                 if(!count($CheckInFavorite)){
                     $request['user_id'] = auth() -> id();
-                    $fav = $post -> favorite() -> create($request->all());
+                    $post -> favorite() -> create($request->all());
                     return $this->handleSuccessWithResult($post ,'add favorite successfully');
+                }
+                else {
+                    $post->favorite()->delete();
+                   return $this->handleSuccessWithResult($post ,'remove favorite successfully');
                 }
             }else{
                 return $this->handleError("the post not found",401);
@@ -54,24 +58,4 @@ class FavoritesController extends BaseController
         }     
     }
 
-
-
-    /**
-     * As a user I can remove favorite on the post.
-     */
-    public function destroy(String $id)
-    {
-        try {
-            $favorite = Favorite::where('user_id', auth()->user()->id)->where('id', $id)->first();
-            if($favorite){
-                $favorite->delete();
-                return $this->handleSuccessWithResult($favorite,"Favorites deleted successfully");
-            }else {
-                return $this->handleError("Favorite not found",404);
-            }
-        } catch (Exception $error) {
-            return $this->handleError($error,500);
-        }
-       
-    }
 }
