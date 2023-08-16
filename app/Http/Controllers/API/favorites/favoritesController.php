@@ -45,6 +45,9 @@ class FavoritesController extends BaseController
                     $request['user_id'] = auth() -> id();
                     $post -> favorite() -> create($request->all());
                     return $this->handleSuccessWithResult($post ,'add favorite successfully');
+                }else{
+                    $CheckInFavorite->delete();
+                    return $this->handleSuccessWithResult($favorite,"Favorites deleted successfully");
                 }
                 else {
                     $post->favorite()->delete();

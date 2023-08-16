@@ -50,3 +50,6 @@ Route::resource('files', FileController::class)->middleware('auth:api');
 Route::get('file/{id}', [FileController::class, 'DownloadFile']);
 
 Route::resource('favorite', FavoritesController::class)->middleware('auth:api');
+
+
+Route::post('updateFile/{id}',[FileController::class , 'update'])->middleware('auth:api');

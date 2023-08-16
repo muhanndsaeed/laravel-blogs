@@ -8,7 +8,6 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Requests\FileRequest;
-
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -22,6 +21,7 @@ class FileController extends BaseController
      */
     public function store(FileRequest $request)
     {   
+       
         $post= Post::where('user_id',auth()->user()->id)->find($request->post_id);
         if($post){
             $name = $request->file_name->getClientOriginalName();
@@ -51,6 +51,30 @@ class FileController extends BaseController
             return $this->handleError("File Not Found",404);
         }
         
+    }
+
+     /**
+     * As a user I can update file
+     */
+    public function update(Request $request,string $id){
+        try{
+            $file = File::find($id);
+            if(auth()->id() != $file->user_id){
+                return $this->handleError("anauthorised",404);
+            }else{
+                if($file){
+                   $t= $file->update([
+                        'file_name'=>$request->file_name->getClientOriginalName(),
+                        'file_path'=>$request->file_name->store('public/posts'),
+               ]);
+                    return $this->handleSuccessWithResult($t,'Update file successfully');
+                } else{
+                    return $this->handleError("file not found",404);
+                }
+            }  
+            }catch (Exception $error) {
+                return $this->handleError($error,500);
+            }  
     }
 
 
