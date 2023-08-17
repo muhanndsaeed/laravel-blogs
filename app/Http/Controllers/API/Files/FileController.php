@@ -24,19 +24,24 @@ class FileController extends BaseController
        
         $post= Post::where('user_id',auth()->user()->id)->find($request->post_id);
         if($post){
-            $name = $request->file_name->getClientOriginalName();
-            $path = $request->file_name->store('uploads','public');
-            $save['user_id'] = auth()->user()->id;
-            $save['file_name'] = $name;
-            $save['file_path'] = $path;
-                        
-           $file = $post->file()->create($save);
+            $checkFile = $post->file()->where('post_id',$request->post_id)->get();
+            if(!count($checkFile)) {
+                $name = $request->file_name->getClientOriginalName();
+                $path = $request->file_name->store('uploads', 'public');
+                $save['user_id'] = auth()->user()->id;
+                $save['file_name'] = $name;
+                $save['file_path'] = $path;
 
-            return $this->handleSuccessWithResult($file,'Added file successfully');
+                $file = $post->file()->create($save);
+
+            return $this->handleSuccessWithResult($file, 'Added file successfully');
+            }else {
+                return $this->handleError('Post has file already',401);
+}
         }else {
             return $this->handleError('Post not found',404);
         }
-    
+ 
     }
 
     
