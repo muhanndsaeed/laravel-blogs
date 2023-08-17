@@ -23,7 +23,7 @@ class PostResource extends JsonResource
             'category' => $this -> category-> title,
             'title' => $this -> title,
             'description' => $this -> description,
-            'file'=> $this->user->file,
+            'file'=> $this->user->file->where('post_id', $this->id),
             'favorites' => $this-> favorite,
             'favorites_count' => $this -> favorite->count(),
             'created_at' => $this -> created_at,
