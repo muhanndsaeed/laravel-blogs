@@ -9,6 +9,7 @@ use App\Http\Controllers\API\Category\CategoryController;
 use App\Http\Controllers\API\Authentication\AuthController;
 use App\Http\Controllers\API\Authentication\UserController;
 use App\Http\Controllers\API\favorites\FavoritesController;
+use App\Http\Controllers\API\Authentication\GoogleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,8 @@ use App\Http\Controllers\API\favorites\FavoritesController;
 
 Route::post('register' , [AuthController::class , 'register']);
 Route::post('login' , [AuthController::class , 'login']);
+Route::get('auth/google', [GoogleController::class, 'redirectToGoogle']);
+Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 Route::post('forgot', [AuthController::class, 'forgot']);
 Route::post('reset', [AuthController::class, 'resetpassword']);
 Route::middleware('auth:api')->prefix('user')->group(function(){
@@ -53,3 +56,7 @@ Route::resource('favorite', FavoritesController::class)->middleware('auth:api');
 
 
 Route::post('updateFile/{id}',[FileController::class , 'update'])->middleware('auth:api');
+
+
+
+

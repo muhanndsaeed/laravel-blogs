@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Files;
 use App\Models\Category;
 use App\Models\Favorite;
 use Laravel\Passport\HasApiTokens;
@@ -28,6 +29,7 @@ class User extends Authenticatable
         'phone_number',
         'role',
         'password',
+        'google_id'
     ];
 
     /**
@@ -62,7 +64,7 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class);
     }
     public function file(){
-        return $this->hasMany(File::class);
+        return $this->hasMany(Files::class);
     }
 
     public function favorite(){

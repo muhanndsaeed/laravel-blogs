@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API\Files;
 
 use Exception;
-use App\Models\File;
+use App\Models\Files;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -12,6 +12,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\API\BaseController;
+use Illuminate\Support\Facades\File;
+
 
 class FileController extends BaseController
 {
@@ -45,7 +47,7 @@ class FileController extends BaseController
     }
 
     
-    public function DownloadFile(String $id ,File $file){
+    public function DownloadFile(String $id ,Files $file){
         $uploadfile = $file->where('id',$id)->first();
         if($uploadfile){
             $path = $uploadfile->file_path;
@@ -63,11 +65,13 @@ class FileController extends BaseController
      */
     public function update(Request $request,string $id){
         try{
-            $file = File::find($id);
+            $file = Files::find($id);
+            
             if(auth()->id() != $file->user_id){
                 return $this->handleError("anauthorised",404);
             }else{
                 if($file){
+                   File::delete(storage_path().'/app/'.$file->file_path);
                    $t= $file->update([
                         'file_name'=>$request->file_name->getClientOriginalName(),
                         'file_path'=>$request->file_name->store('uploads','public'),
@@ -76,8 +80,8 @@ class FileController extends BaseController
                 } else{
                     return $this->handleError("file not found",404);
                 }
-            }  
-            }catch (Exception $error) {
+            }}
+            catch (Exception $error) {
                 return $this->handleError($error,500);
             }  
     }
@@ -86,7 +90,7 @@ class FileController extends BaseController
     /**
      * As a user I can delete file
      */
-    public function destroy(File $file)
+    public function destroy(Files $file)
     {
         try{
             if(auth()->id() != $file->user_id){
