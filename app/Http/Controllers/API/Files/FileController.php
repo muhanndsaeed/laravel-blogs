@@ -71,7 +71,7 @@ class FileController extends BaseController
                 return $this->handleError("anauthorised",404);
             }else{
                 if($file){
-                   File::delete(storage_path().'/app/'.$file->file_path);
+                   File::delete(storage_path().'/app/public/'.$file->file_path);
                    $t= $file->update([
                         'file_name'=>$request->file_name->getClientOriginalName(),
                         'file_path'=>$request->file_name->store('uploads','public'),
@@ -97,7 +97,7 @@ class FileController extends BaseController
                 return $this->handleError("unauthorised",401);
             }else{
                 if($file->delete()){
-                   $deleted = Storage::delete($file->file_path);
+                   $deleted = File::delete(storage_path().'/app/public/'.$file->file_path);
                    if($deleted){
                     return $this->handleSuccessWithResult($file ,'deleted successfully');
                    }
