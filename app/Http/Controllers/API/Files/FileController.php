@@ -66,12 +66,14 @@ class FileController extends BaseController
     public function update(Request $request,string $id){
         try{
             $file = Files::find($id);
+
+            // return $file->file_path;
             
             if(auth()->id() != $file->user_id){
                 return $this->handleError("anauthorised",404);
             }else{
                 if($file){
-                   File::delete(storage_path().'/app/'.$file->file_path);
+                   File::delete(storage_path().'/app/public/'.$file->file_path);
                    $t= $file->update([
                         'file_name'=>$request->file_name->getClientOriginalName(),
                         'file_path'=>$request->file_name->store('uploads','public'),
@@ -80,7 +82,9 @@ class FileController extends BaseController
                 } else{
                     return $this->handleError("file not found",404);
                 }
-            }}
+            }
+        
+        }
             catch (Exception $error) {
                 return $this->handleError($error,500);
             }  

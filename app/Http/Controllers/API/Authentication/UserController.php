@@ -9,8 +9,56 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\API\BaseController;
 
+
 class UserController extends BaseController
 {
+     /**
+     * @OA\Post(
+     *      path="user/updatePassword",
+     *      operationId="updatePassword",
+     *      tags={"Authentication"},
+     *      summary="as a user i can change my password",
+     *      @OA\Parameter(
+     *         name="bearerAuth",
+     *         in="header",
+     *         required=true,
+     *         description="Bearer {access-token}",
+     *         @OA\Schema(
+     *              type="String"
+     *         ) 
+     *      ), 
+     *      @OA\Parameter(
+     *         name="Accept",
+     *         in="header",
+     *         required=true,
+     *         description="application/json",
+     *         @OA\Schema(
+     *              type="String"
+     *         ) 
+     *      ), 
+     *      @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *            required={"password","new_password","new_password_confirmation"},
+     *            @OA\Property(property="password", type="string", format="string", example="Garage1234"),
+     *            @OA\Property(property="new_password", type="string", format="string", example="Garage12345"),
+     *            @OA\Property(property="new_password_confirmation", type="string", format="string", example="Garage12345"),
+     *         ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Your current password is change",
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Your current password is incorrect",
+     *       ),
+     *      @OA\Response(
+     *          response=402,
+     *          description="Some error happened , please try again",
+     *       ),
+     *     )
+     */
     public function updatePassword(Request $request){
         $user = auth() -> user();
         $validatedData = $request -> validate([
@@ -29,11 +77,55 @@ class UserController extends BaseController
                return $this->handleSuccess('Your current password is change');
     
             }else{
-                return $this->handleError('Some error happened , please try again',401);
+                return $this->handleError('Some error happened , please try again',402);
             }
         }
     }
 
+     /**
+     * @OA\Post(
+     *      path="user/profile/edit",
+     *      operationId="updateProfile",
+     *      tags={"Authentication"},
+     *      summary="as a user i can update on my profile",
+     *      @OA\Parameter(
+     *         name="bearerAuth",
+     *         in="header",
+     *         required=true,
+     *         description="Bearer {access-token}",
+     *         @OA\Schema(
+     *              type="String"
+     *         ) 
+     *      ), 
+     *      @OA\Parameter(
+     *         name="Accept",
+     *         in="header",
+     *         required=true,
+     *         description="application/json",
+     *         @OA\Schema(
+     *              type="String"
+     *         ) 
+     *      ), 
+     *      @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *            required={"name"},
+     *            @OA\Property(property="name", type="string", format="string", example="Garage"),
+     *            @OA\Property(property="phone_number", type="string", format="string", example="0555555555"),
+     *            @OA\Property(property="user_name", type="string", format="string", example="Garage23"),
+     *            @OA\Property(property="email", type="string", format="string", example="Garage@gmail.com"),
+     *         ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Update successfully",
+     *       ),
+     *      @OA\Response(
+     *          response=402,
+     *          description="Some error happened , please try again",
+     *       ),
+     *     )
+     */
     public function updateProfile(Request $request){
 
         $validatedData = $request -> validate([
@@ -46,9 +138,26 @@ class UserController extends BaseController
         if(auth()->user()->update($validatedData)){
             return $this->handleSuccess('Update successfully');
         }else{
-            return $this->handleError('Some error happened , please try again',401);
+            return $this->handleError('Some error happened , please try again',402);
             }
         }
+
+      /**
+     * @OA\Get(
+     *      path="user/profile",
+     *      operationId="profile",
+     *      tags={"Authentication"},
+     *      summary="as a user i can show my profile",
+     *      @OA\Response(
+     *          response=200,
+     *          description="User"
+     *       ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="No such Found!"
+     *      )
+     *     )
+     */
     
     public function showMyProfile()
     {
