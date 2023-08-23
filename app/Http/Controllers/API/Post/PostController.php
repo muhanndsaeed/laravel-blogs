@@ -13,9 +13,8 @@ use App\Http\Controllers\API\BaseController;
 
 class PostController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+    
     public function index(Post $post)
     {
         try{
@@ -27,9 +26,7 @@ class PostController extends BaseController
 
  
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(PostRequest $request)
     {   
         try{
