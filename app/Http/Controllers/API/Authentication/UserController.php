@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\API\BaseController;
-
+use App\Http\Resources\UserResource;
 
 class UserController extends BaseController
 {
@@ -134,7 +134,6 @@ class UserController extends BaseController
             'user_name'=> 'unique:users,user_name,'.auth()->id(),
             'email'=> 'unique:users,email,'.auth()->id()
         ]);
-        
         if(auth()->user()->update($validatedData)){
             return $this->handleSuccess('Update successfully');
         }else{
@@ -150,8 +149,24 @@ class UserController extends BaseController
      *      summary="as a user i can show my profile",
      *      @OA\Response(
      *          response=200,
-     *          description="User"
+     *          description="Successful Response",
+    *          @OA\JsonContent(
+    *                  @OA\Property(property="success", type="boolean", example=true),
+    *              @OA\Property(property="data", type="object", 
+    *                      @OA\Property(property="id", type="number", example=2),
+    *                      @OA\Property(property="user_name", type="string", example="User"),
+    *                      @OA\Property(property="name", type="string", example="user@test.com"),
+    *                      @OA\Property(property="email", type="string", example=null),
+    *                      @OA\Property(property="phone_number", type="string", example=null),
+    *                      @OA\Property(property="updated_at", type="string", example="2022-06-28 06:06:17"),
+    *                      @OA\Property(property="created_at", type="string", example="2022-06-28 06:06:17"),
+      
+    *              ),
+      *                  @OA\Property(property="message", type="string", example="User fetched successfully!"),
+    *          )
+    *      ),
      *       ),
+     * 
      *      @OA\Response(
      *          response=404,
      *          description="No such Found!"
@@ -163,7 +178,7 @@ class UserController extends BaseController
     {
         $user = auth() -> user();
         if($user){
-            return $this->handleSuccessWithResult($user,'');
+            return $this->handleSuccessWithResult(new UserResource($user),"Profile fetched successfully!");
         }else{
             return $this->handleError('No such Found!',404);
         }

@@ -114,6 +114,29 @@ class AuthController extends BaseController
     }
 
     
+        /**
+     * @OA\Post(
+     *      path="/forgot",
+     *      operationId="forgot",
+     *      tags={"Authentication"},
+     *      summary="as a user i can reset my passsword",
+     *      @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *            required={"email"},
+     *            @OA\Property(property="email", type="string", format="string", example="muhnd@example.com"),
+     *         ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="A code has been sent to your email address",
+     *       ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Incorrect Email Address",
+     *      ),
+     *     )
+     */
 
     public function forgot(Request $request){
         $user = User::where('email',$request->email)->first();
@@ -145,6 +168,32 @@ class AuthController extends BaseController
         
     }
 
+        /**
+     * @OA\Post(
+     *      path="/reset",
+     *      operationId="reset",
+     *      tags={"Authentication"},
+     *      summary="as a user i can reset my passsword",
+     *      @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *            required={"email","token","password","confirm_password"},
+     *            @OA\Property(property="email", type="string", format="string", example="muhnd@example.com"),
+     *            @OA\Property(property="token", type="string", format="string", example="1234"),
+     *            @OA\Property(property="password", type="string", format="string", example="Garage1234"),
+     *            @OA\Property(property="confirm_password", type="string", format="string", example="Garage1234"),
+     *         ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Password Reset Success",
+     *       ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Token mismatch",
+     *      ),
+     *     )
+     */
     public function resetpassword(Request $request){
         $validator = Validator::make($request->all(),[
             'email'=> 'required|exists:users,email',
