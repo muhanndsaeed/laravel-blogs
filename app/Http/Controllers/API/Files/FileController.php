@@ -21,6 +21,78 @@ class FileController extends BaseController
     /**
      * Store a newly created resource in storage.
      */
+
+        /**
+     * @OA\Post(
+     *      path="/files",
+     *      operationId="addfile",
+     *      tags={"Files"},
+     *      summary="As a user I can upload file",
+     *      @OA\Parameter(
+     *         name="bearerAuth",
+     *         in="header",
+     *         required=true,
+     *         description="Bearer {access-token}",
+     *         @OA\Schema(
+     *              type="String"
+     *         ) 
+     *      ), 
+     *       @OA\Parameter(
+     *         name="Accept",
+     *         in="header",
+     *         required=true,
+     *         description="application/json",
+     *         @OA\Schema(
+     *              type="String"
+     *         ) 
+     *      ), 
+    * @OA\RequestBody(
+    *   request="Files",
+    *   required=true,
+    *   description="Upload File",
+    *   @OA\MediaType(
+    *     mediaType="multipart/form-data",
+    *       @OA\Schema(
+    *        @OA\Property(
+    *      property="post_id",
+    *       type="number",
+    *            ),
+    *        @OA\Property(
+    *      property="file_name",
+    *       type="file",
+    *        format="file"
+    *            ),
+    *    )
+    *   )
+    * ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful Response",
+    *          @OA\JsonContent(
+    *                  @OA\Property(property="success", type="boolean", example=true),
+    *              @OA\Property(property="data", type="object", 
+    *                      @OA\Property(property="user_id", type="number", example=2),
+     *                      @OA\Property(property="file_name", type="string", example="950_374d1a8979.png"),
+    *                      @OA\Property(property="file_path", type="string", example="uploads/vwvE7kZ0UaniOCoSyLitp0krNyIhOQD2OaH6pnbD.png"),
+    *                      @OA\Property(property="post_id", type="number", example=1),
+    *                          @OA\Property(property="updated_at", type="string", example="2024-06-28 06:06:17"),
+    *                     @OA\Property(property="created_at", type="string", example="2023-06-28 06:06:17"),
+    *                       @OA\Property(property="id", type="number", example=8),
+    *              ),
+    *                  @OA\Property(property="message", type="string", example="Added file successfully"),
+    *          )
+    *      ),
+    *      @OA\Response(
+    *          response=401,
+    *          description="Unauthenticated Response",
+    *          @OA\JsonContent(
+    *                  @OA\Property(property="message", type="string", example="Unauthenticated"),
+    *          )
+    *      ),
+    *       ),
+    *       ),
+    *     )
+    */
     public function store(FileRequest $request)
     {   
        
@@ -63,6 +135,76 @@ class FileController extends BaseController
      /**
      * As a user I can update file
      */
+
+
+    /**
+     * @OA\Post(
+     *      path="/files/{id}",
+     *      operationId="updatefile",
+     *      tags={"Files"},
+     *      summary="As a user I can update file",
+     *          @OA\Parameter(
+     *          name="file_id",
+     *          description="File ID",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *         name="bearerAuth",
+     *         in="header",
+     *         required=true,
+     *         description="Bearer {access-token}",
+     *         @OA\Schema(
+     *              type="String"
+     *         ) 
+     *      ), 
+     *       @OA\Parameter(
+     *         name="Accept",
+     *         in="header",
+     *         required=true,
+     *         description="application/json",
+     *         @OA\Schema(
+     *              type="String"
+     *         ) 
+     *      ), 
+    * @OA\RequestBody(
+    *   request="Files",
+    *   required=true,
+    *   description="Upload File",
+    *   @OA\MediaType(
+    *     mediaType="multipart/form-data",
+    *       @OA\Schema(
+    *        @OA\Property(
+    *      property="file_name",
+    *       type="file",
+    *        format="file"
+    *            ),
+    *    )
+    *   )
+    * ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful Response",
+    *          @OA\JsonContent(
+    *                  @OA\Property(property="success", type="boolean", example=true),
+    *              @OA\Property(property="data", type="boolean",example=true ),
+    *                  @OA\Property(property="message", type="string", example="Update file successfully"),
+    *          ),
+    *      ),
+    *      @OA\Response(
+    *          response=401,
+    *          description="Unauthenticated Response",
+    *          @OA\JsonContent(
+    *                  @OA\Property(property="message", type="string", example="Unauthenticated"),
+    *          )
+    *      ),
+    *       ),
+    *       ),
+    *     )
+    */
     public function update(Request $request,string $id){
         try{
             $file = Files::find($id);
@@ -94,6 +236,70 @@ class FileController extends BaseController
     /**
      * As a user I can delete file
      */
+
+     /**
+     * @OA\Delete(
+     *      path="/files/{id}",
+     *      operationId="deletefile",
+     *      tags={"Files"},
+     *      summary="As a user I can delete file",
+     *          @OA\Parameter(
+     *          name="file_id",
+     *          description="File ID",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *         name="bearerAuth",
+     *         in="header",
+     *         required=true,
+     *         description="Bearer {access-token}",
+     *         @OA\Schema(
+     *              type="String"
+     *         ) 
+     *      ), 
+     *       @OA\Parameter(
+     *         name="Accept",
+     *         in="header",
+     *         required=true,
+     *         description="application/json",
+     *         @OA\Schema(
+     *              type="String"
+     *         ) 
+     *      ), 
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful Response",
+    *          @OA\JsonContent(
+    *                  @OA\Property(property="success", type="boolean", example=true),
+    *              @OA\Property(property="data", type="object", 
+    *                       @OA\Property(property="id", type="number", example=8),
+    *                      @OA\Property(property="user_id", type="number", example=2),
+    *                      @OA\Property(property="post_id", type="number", example=1),
+    *                      @OA\Property(property="file_name", type="string", example="950_374d1a8979.png"),
+    *                      @OA\Property(property="file_path", type="string", example="uploads/vwvE7kZ0UaniOCoSyLitp0krNyIhOQD2OaH6pnbD.png"),
+
+    *                          @OA\Property(property="updated_at", type="string", example="2024-06-28 06:06:17"),
+    *                     @OA\Property(property="created_at", type="string", example="2023-06-28 06:06:17"),
+
+    *              ),
+    *                  @OA\Property(property="message", type="string", example="Added file successfully"),
+    *          )
+    *      ),
+    *      @OA\Response(
+    *          response=401,
+    *          description="Unauthenticated Response",
+    *          @OA\JsonContent(
+    *                  @OA\Property(property="message", type="string", example="Unauthenticated"),
+    *          )
+    *      ),
+    *       ),
+    *       ),
+    *     )
+    */
     public function destroy(Files $file)
     {
         try{

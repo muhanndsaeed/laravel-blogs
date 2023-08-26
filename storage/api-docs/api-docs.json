@@ -766,7 +766,7 @@
                 "tags": [
                     "Category"
                 ],
-                "summary": "as a admin i can update on category",
+                "summary": "as a admin i can delete category",
                 "operationId": "deletecategory",
                 "parameters": [
                     {
@@ -865,33 +865,908 @@
                     }
                 }
             }
+        },
+        "/comment/{post_id}": {
+            "get": {
+                "tags": [
+                    "Comment"
+                ],
+                "summary": "As a user I can show all my comments",
+                "operationId": "getmycomment",
+                "parameters": [
+                    {
+                        "name": "post_id",
+                        "in": "path",
+                        "description": "Post id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "bearerAuth",
+                        "in": "header",
+                        "description": "Bearer {access-token}",
+                        "required": true,
+                        "schema": {
+                            "type": "String"
+                        }
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "application/json",
+                        "required": true,
+                        "schema": {
+                            "type": "String"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "number",
+                                                    "example": 8
+                                                },
+                                                "user_id": {
+                                                    "type": "number",
+                                                    "example": 2
+                                                },
+                                                "post_id": {
+                                                    "type": "number",
+                                                    "example": 1
+                                                },
+                                                "user_name": {
+                                                    "type": "string",
+                                                    "example": "Muhnnd"
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Muhnnd"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "muhnd@exmaple.com"
+                                                },
+                                                "content": {
+                                                    "type": "string",
+                                                    "example": "Good post"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "example": "2023-06-28 06:06:17"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you dont have any comment"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/comment": {
+            "post": {
+                "tags": [
+                    "Comment"
+                ],
+                "summary": "As a user I can add comment on post",
+                "operationId": "addcomment",
+                "parameters": [
+                    {
+                        "name": "bearerAuth",
+                        "in": "header",
+                        "description": "Bearer {access-token}",
+                        "required": true,
+                        "schema": {
+                            "type": "String"
+                        }
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "application/json",
+                        "required": true,
+                        "schema": {
+                            "type": "String"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "post_id",
+                                    "content"
+                                ],
+                                "properties": {
+                                    "post_id": {
+                                        "type": "number",
+                                        "format": "string",
+                                        "example": 1
+                                    },
+                                    "content": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "Good post "
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "post_id": {
+                                                    "type": "number",
+                                                    "example": 1
+                                                },
+                                                "content": {
+                                                    "type": "string",
+                                                    "example": "Good post"
+                                                },
+                                                "user_id": {
+                                                    "type": "number",
+                                                    "example": 2
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "example": "2024-06-28 06:06:17"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "example": "2023-06-28 06:06:17"
+                                                },
+                                                "id": {
+                                                    "type": "number",
+                                                    "example": 8
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Added Comment Success!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/comment/{id}": {
+            "get": {
+                "tags": [
+                    "Comment"
+                ],
+                "summary": "As a user I can show all comments on the post",
+                "operationId": "showcomment",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Post id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "bearerAuth",
+                        "in": "header",
+                        "description": "Bearer {access-token}",
+                        "required": true,
+                        "schema": {
+                            "type": "String"
+                        }
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "application/json",
+                        "required": true,
+                        "schema": {
+                            "type": "String"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "number",
+                                                    "example": 8
+                                                },
+                                                "user_id": {
+                                                    "type": "number",
+                                                    "example": 2
+                                                },
+                                                "post_id": {
+                                                    "type": "number",
+                                                    "example": 1
+                                                },
+                                                "user_name": {
+                                                    "type": "string",
+                                                    "example": "Muhnnd"
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Muhnnd"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "muhnd@exmaple.com"
+                                                },
+                                                "content": {
+                                                    "type": "string",
+                                                    "example": "Good post"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "example": "2023-06-28 06:06:17"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Added Comment Success!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/comment/{comment_id}": {
+            "put": {
+                "tags": [
+                    "Comment"
+                ],
+                "summary": "As a user I can update on my comment",
+                "operationId": "updatecomment",
+                "parameters": [
+                    {
+                        "name": "commnt_id",
+                        "in": "path",
+                        "description": "Comment ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "bearerAuth",
+                        "in": "header",
+                        "description": "Bearer {access-token}",
+                        "required": true,
+                        "schema": {
+                            "type": "String"
+                        }
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "application/json",
+                        "required": true,
+                        "schema": {
+                            "type": "String"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "content"
+                                ],
+                                "properties": {
+                                    "content": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "Good post "
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "number",
+                                                    "example": 8
+                                                },
+                                                "user_id": {
+                                                    "type": "number",
+                                                    "example": 2
+                                                },
+                                                "post_id": {
+                                                    "type": "number",
+                                                    "example": 1
+                                                },
+                                                "content": {
+                                                    "type": "string",
+                                                    "example": "Good post"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "example": "2023-06-28 06:06:17"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "example": "2024-06-28 06:06:17"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Update comment successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Comment"
+                ],
+                "summary": "As a user I can update on my comment",
+                "operationId": "deletecomment",
+                "parameters": [
+                    {
+                        "name": "commnt_id",
+                        "in": "path",
+                        "description": "Comment ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "bearerAuth",
+                        "in": "header",
+                        "description": "Bearer {access-token}",
+                        "required": true,
+                        "schema": {
+                            "type": "String"
+                        }
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "application/json",
+                        "required": true,
+                        "schema": {
+                            "type": "String"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "number",
+                                                    "example": 8
+                                                },
+                                                "user_id": {
+                                                    "type": "number",
+                                                    "example": 2
+                                                },
+                                                "post_id": {
+                                                    "type": "number",
+                                                    "example": 1
+                                                },
+                                                "content": {
+                                                    "type": "string",
+                                                    "example": "Good post"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "example": "2023-06-28 06:06:17"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "example": "2024-06-28 06:06:17"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/files": {
+            "post": {
+                "tags": [
+                    "Files"
+                ],
+                "summary": "As a user I can upload file",
+                "operationId": "addfile",
+                "parameters": [
+                    {
+                        "name": "bearerAuth",
+                        "in": "header",
+                        "description": "Bearer {access-token}",
+                        "required": true,
+                        "schema": {
+                            "type": "String"
+                        }
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "application/json",
+                        "required": true,
+                        "schema": {
+                            "type": "String"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "request": "Files",
+                    "description": "Upload File",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "post_id": {
+                                        "type": "number"
+                                    },
+                                    "file_name": {
+                                        "type": "file",
+                                        "format": "file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "user_id": {
+                                                    "type": "number",
+                                                    "example": 2
+                                                },
+                                                "file_name": {
+                                                    "type": "string",
+                                                    "example": "950_374d1a8979.png"
+                                                },
+                                                "file_path": {
+                                                    "type": "string",
+                                                    "example": "uploads/vwvE7kZ0UaniOCoSyLitp0krNyIhOQD2OaH6pnbD.png"
+                                                },
+                                                "post_id": {
+                                                    "type": "number",
+                                                    "example": 1
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "example": "2024-06-28 06:06:17"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "example": "2023-06-28 06:06:17"
+                                                },
+                                                "id": {
+                                                    "type": "number",
+                                                    "example": 8
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Added file successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/files/{id}": {
+            "post": {
+                "tags": [
+                    "Files"
+                ],
+                "summary": "As a user I can update file",
+                "operationId": "updatefile",
+                "parameters": [
+                    {
+                        "name": "file_id",
+                        "in": "path",
+                        "description": "File ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "bearerAuth",
+                        "in": "header",
+                        "description": "Bearer {access-token}",
+                        "required": true,
+                        "schema": {
+                            "type": "String"
+                        }
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "application/json",
+                        "required": true,
+                        "schema": {
+                            "type": "String"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "request": "Files",
+                    "description": "Upload File",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "file_name": {
+                                        "type": "file",
+                                        "format": "file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Update file successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Files"
+                ],
+                "summary": "As a user I can delete file",
+                "operationId": "deletefile",
+                "parameters": [
+                    {
+                        "name": "file_id",
+                        "in": "path",
+                        "description": "File ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "bearerAuth",
+                        "in": "header",
+                        "description": "Bearer {access-token}",
+                        "required": true,
+                        "schema": {
+                            "type": "String"
+                        }
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "application/json",
+                        "required": true,
+                        "schema": {
+                            "type": "String"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "number",
+                                                    "example": 8
+                                                },
+                                                "user_id": {
+                                                    "type": "number",
+                                                    "example": 2
+                                                },
+                                                "post_id": {
+                                                    "type": "number",
+                                                    "example": 1
+                                                },
+                                                "file_name": {
+                                                    "type": "string",
+                                                    "example": "950_374d1a8979.png"
+                                                },
+                                                "file_path": {
+                                                    "type": "string",
+                                                    "example": "uploads/vwvE7kZ0UaniOCoSyLitp0krNyIhOQD2OaH6pnbD.png"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "example": "2024-06-28 06:06:17"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "example": "2023-06-28 06:06:17"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Added file successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
         "schemas": {
-            "UserSchema": {
-                "properties": {
-                    "id": {
-                        "description": "User identifier",
-                        "type": "integer",
-                        "example": "1",
-                        "nullable": "false"
-                    },
-                    "name": {
-                        "description": "User name",
-                        "type": "string",
-                        "example": "Kellen Boyer",
-                        "nullable": "false"
-                    },
-                    "email": {
-                        "description": "User E-mail",
-                        "type": "string",
-                        "example": "kellen.boyer@example.com",
-                        "nullable": "false"
-                    }
-                },
-                "type": "object"
-            },
             "User": {
                 "title": "User",
                 "description": "User model",
@@ -925,6 +1800,10 @@
         },
         {
             "name": "Comment",
+            "description": "API Endpoints of Projects"
+        },
+        {
+            "name": "Files",
             "description": "API Endpoints of Projects"
         }
     ]

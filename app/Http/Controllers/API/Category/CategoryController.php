@@ -218,7 +218,7 @@ class CategoryController extends BaseController
      *      path="/category/{id}",
      *      operationId="deletecategory",
      *      tags={"Category"},
-     *      summary="as a admin i can update on category",
+     *      summary="as a admin i can delete category",
      *      @OA\Parameter(
      *          name="id",
      *          description="Category id",
