@@ -66,6 +66,8 @@ class FileController extends BaseController
     public function update(Request $request,string $id){
         try{
             $file = Files::find($id);
+
+            // return $file->file_path;
             
             if(auth()->id() != $file->user_id){
                 return $this->handleError("anauthorised",404);
@@ -80,7 +82,9 @@ class FileController extends BaseController
                 } else{
                     return $this->handleError("file not found",404);
                 }
-            }}
+            }
+        
+        }
             catch (Exception $error) {
                 return $this->handleError($error,500);
             }  
