@@ -17,6 +17,70 @@ class CommentController extends BaseController
     /**
      * As a user I can show all my comments.
      */
+
+        /**
+     * @OA\Get(
+     *      path="/comment/{post_id}",
+     *      operationId="getmycomment",
+     *      tags={"Comment"},
+     *      summary="As a user I can show all my comments",
+     *          @OA\Parameter(
+     *          name="post_id",
+     *          description="Post id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *         name="bearerAuth",
+     *         in="header",
+     *         required=true,
+     *         description="Bearer {access-token}",
+     *         @OA\Schema(
+     *              type="String"
+     *         ) 
+     *      ), 
+     *       @OA\Parameter(
+     *         name="Accept",
+     *         in="header",
+     *         required=true,
+     *         description="application/json",
+     *         @OA\Schema(
+     *              type="String"
+     *         ) 
+     *      ), 
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful Response",
+    *          @OA\JsonContent(
+    *                  @OA\Property(property="success", type="boolean", example=true),
+    *              @OA\Property(property="message", type="object", 
+    *                       @OA\Property(property="id", type="number", example=8),
+    *                       @OA\Property(property="user_id", type="number", example=2),
+    *                      @OA\Property(property="post_id", type="number", example=1),
+    *                      @OA\Property(property="user_name", type="string", example="Muhnnd"),
+    *                      @OA\Property(property="name", type="string", example="Muhnnd"),
+    *                      @OA\Property(property="email", type="string", example="muhnd@exmaple.com"),
+    *                      @OA\Property(property="content", type="string", example="Good post"),
+    *                     @OA\Property(property="created_at", type="string", example="2023-06-28 06:06:17"),
+    *              ),
+    *          )
+    *      ),
+    *      @OA\Response(
+     *          response=404,
+     *          description="Not Found Response",
+    *          @OA\JsonContent(
+    *                  @OA\Property(property="message", type="string", example="you dont have any comment"),
+    *          )
+    *      ),
+     *       ),
+     *       ),
+     *     )
+     */
+
+ 
     public function index(Comment $comment)
     {
         try{
@@ -24,18 +88,73 @@ class CommentController extends BaseController
             if(count($comments)){
                 return CommentResource::collection($comments);
             }else{
-                return "you dont have any comment";
+                return $this->handleError("you dont have any comment",404);
             }
         }catch (Exception $error) {
             return $this->handleError($error,500);
         }  
     }
 
-   
-
-    /**
-     * Store a newly created resource in storage.
+   /**
+     * @OA\Post(
+     *      path="/comment",
+     *      operationId="addcomment",
+     *      tags={"Comment"},
+     *      summary="As a user I can add comment on post",
+     *      @OA\Parameter(
+     *         name="bearerAuth",
+     *         in="header",
+     *         required=true,
+     *         description="Bearer {access-token}",
+     *         @OA\Schema(
+     *              type="String"
+     *         ) 
+     *      ), 
+     *       @OA\Parameter(
+     *         name="Accept",
+     *         in="header",
+     *         required=true,
+     *         description="application/json",
+     *         @OA\Schema(
+     *              type="String"
+     *         ) 
+     *      ), 
+     *      @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *            required={"post_id","content"},
+     *            @OA\Property(property="post_id", type="number", format="string", example=1),
+     *            @OA\Property(property="content", type="string", format="string", example="Good post "),
+     *         ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful Response",
+    *          @OA\JsonContent(
+    *                  @OA\Property(property="success", type="boolean", example=true),
+    *              @OA\Property(property="data", type="object", 
+    *                      @OA\Property(property="post_id", type="number", example=1),
+    *                      @OA\Property(property="content", type="string", example="Good post"),
+    *                       @OA\Property(property="user_id", type="number", example=2),
+    *                          @OA\Property(property="updated_at", type="string", example="2024-06-28 06:06:17"),
+    *                     @OA\Property(property="created_at", type="string", example="2023-06-28 06:06:17"),
+    *                       @OA\Property(property="id", type="number", example=8),
+    *              ),
+     *                  @OA\Property(property="message", type="string", example="Added Comment Success!"),
+    *          )
+    *      ),
+    *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated Response",
+    *          @OA\JsonContent(
+    *                  @OA\Property(property="message", type="string", example="Unauthenticated"),
+    *          )
+    *      ),
+     *       ),
+     *       ),
+     *     )
      */
+
     public function store(CommentRequest $request)
     {  
         try {
@@ -54,6 +173,69 @@ class CommentController extends BaseController
 
     /**
      * Display the specified resource.
+     */
+    
+    /**
+     * @OA\Get(
+     *      path="/comment/{id}",
+     *      operationId="showcomment",
+     *      tags={"Comment"},
+     *      summary="As a user I can show all comments on the post",
+     *          @OA\Parameter(
+     *          name="id",
+     *          description="Post id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *         name="bearerAuth",
+     *         in="header",
+     *         required=true,
+     *         description="Bearer {access-token}",
+     *         @OA\Schema(
+     *              type="String"
+     *         ) 
+     *      ), 
+     *       @OA\Parameter(
+     *         name="Accept",
+     *         in="header",
+     *         required=true,
+     *         description="application/json",
+     *         @OA\Schema(
+     *              type="String"
+     *         ) 
+     *      ), 
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful Response",
+    *          @OA\JsonContent(
+    *                  @OA\Property(property="success", type="boolean", example=true),
+    *              @OA\Property(property="data", type="object", 
+    *                       @OA\Property(property="id", type="number", example=8),
+    *                       @OA\Property(property="user_id", type="number", example=2),
+    *                      @OA\Property(property="post_id", type="number", example=1),
+    *                      @OA\Property(property="user_name", type="string", example="Muhnnd"),
+    *                      @OA\Property(property="name", type="string", example="Muhnnd"),
+    *                      @OA\Property(property="email", type="string", example="muhnd@exmaple.com"),
+    *                      @OA\Property(property="content", type="string", example="Good post"),
+    *                     @OA\Property(property="created_at", type="string", example="2023-06-28 06:06:17"),
+    *              ),
+     *                  @OA\Property(property="message", type="string", example="Added Comment Success!"),
+    *          )
+    *      ),
+    *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated Response",
+    *          @OA\JsonContent(
+    *                  @OA\Property(property="message", type="string", example="Unauthenticated"),
+    *          )
+    *      ),
+     *       ),
+     *       ),
+     *     )
      */
     public function show(string $id)
     {
@@ -74,6 +256,74 @@ class CommentController extends BaseController
 
     /**
      * As a user I can update on my comment.
+     */
+
+        /**
+     * @OA\PUT(
+     *      path="/comment/{comment_id}",
+     *      operationId="updatecomment",
+     *      tags={"Comment"},
+     *      summary="As a user I can update on my comment",
+     *         @OA\Parameter(
+     *          name="commnt_id",
+     *          description="Comment ID",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *         name="bearerAuth",
+     *         in="header",
+     *         required=true,
+     *         description="Bearer {access-token}",
+     *         @OA\Schema(
+     *              type="String"
+     *         ) 
+     *      ), 
+     *       @OA\Parameter(
+     *         name="Accept",
+     *         in="header",
+     *         required=true,
+     *         description="application/json",
+     *         @OA\Schema(
+     *              type="String"
+     *         ) 
+     *      ), 
+     *      @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *            required={"content"},
+     *            @OA\Property(property="content", type="string", format="string", example="Good post "),
+     *         ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful Response",
+    *          @OA\JsonContent(
+    *                  @OA\Property(property="success", type="boolean", example=true),
+    *              @OA\Property(property="data", type="object", 
+    *                       @OA\Property(property="id", type="number", example=8),
+     *                       @OA\Property(property="user_id", type="number", example=2),
+    *                      @OA\Property(property="post_id", type="number", example=1),
+    *                      @OA\Property(property="content", type="string", example="Good post"),
+    *                     @OA\Property(property="created_at", type="string", example="2023-06-28 06:06:17"),
+    *                          @OA\Property(property="updated_at", type="string", example="2024-06-28 06:06:17"),
+    *              ),
+    *                  @OA\Property(property="message", type="string", example="Update comment successfully"),
+    *          )
+    *      ),
+    *      @OA\Response(
+    *          response=401,
+    *          description="Unauthenticated Response",
+    *          @OA\JsonContent(
+    *                  @OA\Property(property="message", type="string", example="Unauthenticated"),
+    *          )
+    *      ),
+     *       ),
+     *       ),
+     *     )
      */
     public function update(Request $request,string $id)
     { 
@@ -100,6 +350,67 @@ class CommentController extends BaseController
 
     /**
      *As a user I can delete my comment on the post
+     */
+
+      /**
+     * @OA\Delete(
+     *      path="/comment/{comment_id}",
+     *      operationId="deletecomment",
+     *      tags={"Comment"},
+     *      summary="As a user I can update on my comment",
+     *         @OA\Parameter(
+     *          name="commnt_id",
+     *          description="Comment ID",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *         name="bearerAuth",
+     *         in="header",
+     *         required=true,
+     *         description="Bearer {access-token}",
+     *         @OA\Schema(
+     *              type="String"
+     *         ) 
+     *      ), 
+     *       @OA\Parameter(
+     *         name="Accept",
+     *         in="header",
+     *         required=true,
+     *         description="application/json",
+     *         @OA\Schema(
+     *              type="String"
+     *         ) 
+     *      ), 
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful Response",
+    *          @OA\JsonContent(
+    *                  @OA\Property(property="success", type="boolean", example=true),
+    *              @OA\Property(property="data", type="object", 
+    *                       @OA\Property(property="id", type="number", example=8),
+     *                       @OA\Property(property="user_id", type="number", example=2),
+    *                      @OA\Property(property="post_id", type="number", example=1),
+    *                      @OA\Property(property="content", type="string", example="Good post"),
+    *                     @OA\Property(property="created_at", type="string", example="2023-06-28 06:06:17"),
+    *                          @OA\Property(property="updated_at", type="string", example="2024-06-28 06:06:17"),
+    *              ),
+    *                  @OA\Property(property="message", type="string", example="deleted successfully"),
+    *          )
+    *      ),
+    *      @OA\Response(
+    *          response=401,
+    *          description="Unauthenticated Response",
+    *          @OA\JsonContent(
+    *                  @OA\Property(property="message", type="string", example="Unauthenticated"),
+    *          )
+    *      ),
+     *       ),
+     *       ),
+     *     )
      */
     public function destroy(string $id)
     {
