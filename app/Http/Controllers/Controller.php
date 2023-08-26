@@ -45,7 +45,12 @@ use Illuminate\Routing\Controller as BaseController;
      *     name="Comment",
      *     description="API Endpoints of Projects"
      * )
+     *      @OA\Tag(
+     *     name="Files",
+     *     description="API Endpoints of Projects"
+     * )
      */
+    
 
 class Controller extends BaseController
 {
