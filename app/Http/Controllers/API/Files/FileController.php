@@ -22,7 +22,7 @@ class FileController extends BaseController
      * Store a newly created resource in storage.
      */
 
-        /**
+  /**
      * @OA\Post(
      *      path="/files",
      *      operationId="addfile",
@@ -65,14 +65,14 @@ class FileController extends BaseController
     *    )
     *   )
     * ),
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful Response",
-    *          @OA\JsonContent(
-    *                  @OA\Property(property="success", type="boolean", example=true),
+    *      @OA\Response(
+    *          response=200,
+    *          description="Successful Response",
+    *      @OA\JsonContent(
+    *              @OA\Property(property="success", type="boolean", example=true),
     *              @OA\Property(property="data", type="object", 
     *                      @OA\Property(property="user_id", type="number", example=2),
-     *                      @OA\Property(property="file_name", type="string", example="950_374d1a8979.png"),
+    *                      @OA\Property(property="file_name", type="string", example="950_374d1a8979.png"),
     *                      @OA\Property(property="file_path", type="string", example="uploads/vwvE7kZ0UaniOCoSyLitp0krNyIhOQD2OaH6pnbD.png"),
     *                      @OA\Property(property="post_id", type="number", example=1),
     *                          @OA\Property(property="updated_at", type="string", example="2024-06-28 06:06:17"),

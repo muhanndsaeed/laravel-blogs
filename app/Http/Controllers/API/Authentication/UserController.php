@@ -155,9 +155,9 @@ class UserController extends BaseController
     *              @OA\Property(property="data", type="object", 
     *                      @OA\Property(property="id", type="number", example=2),
     *                      @OA\Property(property="user_name", type="string", example="User"),
-    *                      @OA\Property(property="name", type="string", example="user@test.com"),
-    *                      @OA\Property(property="email", type="string", example=null),
-    *                      @OA\Property(property="phone_number", type="string", example=null),
+    *                      @OA\Property(property="name", type="string", example="munhd"),
+    *                      @OA\Property(property="email", type="string", example="muhnd@example.com"),
+    *                      @OA\Property(property="phone_number", type="string", example="0552318312"),
     *                      @OA\Property(property="updated_at", type="string", example="2022-06-28 06:06:17"),
     *                      @OA\Property(property="created_at", type="string", example="2022-06-28 06:06:17"),
       
